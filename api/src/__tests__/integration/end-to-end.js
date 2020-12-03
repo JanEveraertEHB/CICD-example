@@ -22,9 +22,9 @@ describe('test question endpoint', () => {
   })
 
   test('if record exists', async (done) => {
-    const repoonse = await DatabaseHelperETE.select('*').table('records').where({ uuid: ETE_uuid })
-    expect(repoonse.length).toBeGreaterThan(0);
-    expect(repoonse[0]).toHaveProperty('uuid', ETE_uuid);
+    const reponse = await DatabaseHelperETE.select('*').table('records').where({ uuid: ETE_uuid })
+    expect(reponse.length).toBeGreaterThan(0);
+    expect(reponse[0]).toHaveProperty('uuid', ETE_uuid);
     done()
   })
 
@@ -65,6 +65,7 @@ describe('test question endpoint', () => {
     expect(repoonse.length).toBe(0);
     done()
   })
+
   test('if get request fails after delete', async (done) => {
     const response = await requestETE.get(`/question/${ETE_uuid}`).send()
     expect(response.status).toBe(404)
