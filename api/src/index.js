@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser');
 const ConversationHelpers = require('./helper/ConversationHelpers');
+const AuthHelpers = require('./helper/AuthHelper');
 const DatabaseHelper = require('./helper/DatabaseHelper');
 const UUIDHelper = require('./helper/UuidHelpers');
 
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
 /**
 * 
 */
-app.post('/question', async (req, res) => {
+app.post('/question', AuthHelpers.userIsLoggedIn, async (req, res) => {
   const question = req.body.question;
   const response = await ConversationHelpers.senseEmotionHelper(question)
   const uuid = UUIDHelper.generateUUID();
