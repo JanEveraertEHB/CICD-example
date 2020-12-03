@@ -29,4 +29,5 @@ async function initialiseTables() {
 }
 
 initialiseTables()
+
 module.exports = db

@@ -11,7 +11,8 @@ const DatabaseHelperETE = require('./../../helper/DatabaseHelper')
 let ETE_uuid;
 
 
-describe('test question endpoint', () => {
+describe('test end-to-end', () => {
+
   test('if post request succeeds', async (done) => {
     const response = await requestETE.post('/question').send({ "question": "are you evil" })
     expect(response.status).toBe(200)
@@ -25,6 +26,8 @@ describe('test question endpoint', () => {
     const reponse = await DatabaseHelperETE.select('*').table('records').where({ uuid: ETE_uuid })
     expect(reponse.length).toBeGreaterThan(0);
     expect(reponse[0]).toHaveProperty('uuid', ETE_uuid);
+    expect(reponse[0]).toHaveProperty('answer', "-3");
+    expect(reponse[0]).toHaveProperty('question', "are you evil");
     done()
   })
 
@@ -34,6 +37,7 @@ describe('test question endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty("uuid")
     expect(response.body).toHaveProperty("answer")
+    expect(response.body).toHaveProperty("question")
     done();
   })
 
@@ -44,6 +48,15 @@ describe('test question endpoint', () => {
     expect(response.body).toHaveProperty("question", "altered question")
     done();
   })
+
+  test('if record is adapted', async (done) => {
+    const reponse = await DatabaseHelperETE.select('*').table('records').where({ uuid: ETE_uuid })
+    expect(reponse.length).toBeGreaterThan(0);
+    expect(reponse[0]).toHaveProperty('question', "altered question");
+    done()
+  })
+
+
 
   test('if get request succeeds after alter', async (done) => {
     const response = await requestETE.get(`/question/${ETE_uuid}`).send()
